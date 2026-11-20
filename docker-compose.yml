@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sahayyatra-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${SQL_USER:-sahayyatra}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD:-sahayyatra_dev_pw}
+      POSTGRES_DB: ${SQL_DB_NAME:-sahayyatra}
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${SQL_USER:-sahayyatra} -d ${SQL_DB_NAME:-sahayyatra}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: sahayyatra-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+  app:
+    build: .
+    container_name: sahayyatra-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      SQL_HOST: postgres
+      SQL_USER: ${SQL_USER:-sahayyatra}
+      SQL_PASSWORD: ${SQL_PASSWORD:-sahayyatra_dev_pw}
+      SQL_DB_NAME: ${SQL_DB_NAME:-sahayyatra}
+      REDIS_URL: redis://redis:6379
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-4-hydrogen}
+      JWT_SECRET: ${JWT_SECRET:-sahayyatra-docker-jwt-secret}
+      PII_ENCRYPTION_KEY: ${PII_ENCRYPTION_KEY:-sahayyatra-docker-pii-key}
+    command: ['npx', 'tsx', 'server.ts']
+
+volumes:
+  pgdata:

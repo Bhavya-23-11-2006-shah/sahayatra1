@@ -1,0 +1,6 @@
+{
+  "name": "SahayYatra",
+  "description": "Every journey, for everyone. An accessible government-bus booking, live tracking, and voice-first transit platform for persons with disabilities.",
+  "requestFramePermissions": ["microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

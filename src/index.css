@@ -1,0 +1,182 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --sy-bg: #F6FAF9;
+  --sy-surface: #FFFFFF;
+  --sy-surface-muted: #E8F8F5;
+  --sy-border: rgba(11, 27, 58, 0.12);
+  --sy-text: #0B1B3A;
+  --sy-text-muted: #2D4063;
+  --sy-primary: #007A7A;
+  --sy-primary-bright: #00A3A3;
+  --sy-primary-ink: #FFFFFF;
+  --sy-cta: #C84B00;
+  --sy-cta-bright: #FF7A1A;
+  --sy-cta-ink: #FFFFFF;
+  --sy-saffron: #B26B00;
+  --sy-saffron-bg: #FFF6E0;
+  --sy-danger: #B31B1B;
+  --sy-danger-bg: #FDECEC;
+  --sy-success: #0F6B3C;
+  --sy-success-bg: #E7F7EE;
+  --sy-focus: #007A7A;
+  --sy-font-scale: 1;
+  --sy-font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
+  --sy-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.dark {
+  --sy-bg: #071124;
+  --sy-surface: #0E1F3D;
+  --sy-surface-muted: #132A4F;
+  --sy-border: rgba(226, 238, 255, 0.16);
+  --sy-text: #F8FBFF;
+  --sy-text-muted: #C8D9F2;
+  --sy-primary: #45E6E6;
+  --sy-primary-bright: #00A3A3;
+  --sy-primary-ink: #071124;
+  --sy-cta: #FF9447;
+  --sy-cta-bright: #FF7A1A;
+  --sy-cta-ink: #071124;
+  --sy-saffron: #FFD166;
+  --sy-saffron-bg: #2A210B;
+  --sy-danger: #FF8585;
+  --sy-danger-bg: #3B1219;
+  --sy-success: #6EE7A8;
+  --sy-success-bg: #0D3322;
+  --sy-focus: #45E6E6;
+}
+
+.high-contrast {
+  --sy-bg: #000000;
+  --sy-surface: #0A0A0A;
+  --sy-surface-muted: #141414;
+  --sy-border: #FFFFFF;
+  --sy-text: #FFFFFF;
+  --sy-text-muted: #E5E5E5;
+  --sy-primary: #00F0FF;
+  --sy-primary-bright: #00F0FF;
+  --sy-primary-ink: #000000;
+  --sy-cta: #FFE600;
+  --sy-cta-bright: #FFE600;
+  --sy-cta-ink: #000000;
+  --sy-saffron: #FFE600;
+  --sy-saffron-bg: #1A1700;
+  --sy-danger: #FF5C5C;
+  --sy-danger-bg: #240000;
+  --sy-success: #5CFF8D;
+  --sy-success-bg: #00240C;
+  --sy-focus: #FFE600;
+}
+
+.colorblind-safe {
+  --sy-primary: #0072B2;
+  --sy-primary-bright: #0072B2;
+  --sy-cta: #D55E00;
+  --sy-cta-bright: #E69F00;
+  --sy-danger: #CC79A7;
+  --sy-success: #009E73;
+}
+
+.dyslexia-font {
+  --sy-font-body: 'OpenDyslexic', 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+
+html {
+  font-size: calc(18px * var(--sy-font-scale));
+  font-family: var(--sy-font-body);
+  background-color: var(--sy-bg);
+  color: var(--sy-text);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--sy-bg);
+  color: var(--sy-text);
+  font-family: var(--sy-font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.font-tabular {
+  font-family: var(--sy-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3px WCAG AAA visible focus ring */
+*:focus-visible {
+  outline: 3px solid var(--sy-focus);
+  outline-offset: 3px;
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  z-index: 100;
+  padding: 14px 20px;
+  border-radius: 16px;
+  background: var(--sy-cta);
+  color: var(--sy-cta-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Leaflet map container accessibility & theme support */
+.leaflet-container {
+  font-family: var(--sy-font-body);
+  background: var(--sy-surface-muted);
+}
+
+.dark .leaflet-tile-pane,
+.high-contrast .leaflet-tile-pane {
+  filter: invert(92%) hue-rotate(180deg) brightness(95%) contrast(92%);
+}
+
+@keyframes orbBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+@keyframes orbSwirl {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes routeDraw {
+  from { stroke-dashoffset: 600; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-orb-breathe {
+  animation: orbBreathe 4s ease-in-out infinite;
+}
+
+.animate-orb-swirl {
+  animation: orbSwirl 2.4s linear infinite;
+}
